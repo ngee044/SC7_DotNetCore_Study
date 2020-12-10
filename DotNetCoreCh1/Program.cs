@@ -1,13 +1,11 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Packt.CS7;
-using static System.Console;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using System;
 using System.Linq;
+using static System.Console;
 
-namespace DotNetCoreCh1
+namespace Ch08_EFCore
 {
     class Program
     {
@@ -15,32 +13,109 @@ namespace DotNetCoreCh1
         {
             using (var db = new Northwind())
             {
-                var loggerFactory = db.GetService<ILoggerFactory>();
-                loggerFactory.AddProvider(new ConsoleLogProvider());
-
-                IQueryable<Category> cats = db.Categories.Include(data => data.Products);
-
-                foreach (Category c in cats)
+                using (IDbContextTransaction t = db.Database.BeginTransaction())
                 {
-                    WriteLine("{0} has {1} products", c.CategoryName, c.Products.Count);
-                }
+                    WriteLine($"Transaction started with this isolation level: { t.GetDbTransaction().IsolationLevel}");
 
-                WriteLine("==================Price=================");
-                string input;
-                decimal price;
-                do
-                {
-                    Write("Enter a product price: ");
-                    input = ReadLine();
-                } while (!decimal.TryParse(input, out price));
+                    //var loggerFactory = db.GetService<ILoggerFactory>();
+                    //loggerFactory.AddProvider(new ConsoleLogProvider());
 
-                IQueryable<Product> prods = db.Products.Where(product => product.UnitPrice > price).OrderByDescending(product => product.UnitPrice);
-              
-                foreach(Product item in prods)
-                {
-                    WriteLine($"{item.ProductID} : {item.ProductName} costs {item.UnitPrice:$#,##0.00}");
+                    WriteLine("List of categories and the number of products:");
+
+                    IQueryable<Category> cats;
+                    //db.Categories;//.Include(c => c.Products);
+
+                    Write("Enable eager loading? (Y/N): ");
+                    bool eagerloading = (ReadKey().Key == ConsoleKey.Y);
+                    bool explicitloading = false;
+                    WriteLine();
+                    if (eagerloading)
+                    {
+                        cats = db.Categories.Include(c => c.Products);
+                    }
+                    else
+                    {
+                        cats = db.Categories;
+                        Write("Enable explicit loading? (Y/N): ");
+                        explicitloading = (ReadKey().Key == ConsoleKey.Y);
+                        WriteLine();
+                    }
+
+                    foreach (Category c in cats)
+                    {
+                        if (explicitloading)
+                        {
+                            Write($"Explicitly load products for {c.CategoryName}? (Y/N): ");
+                            if (ReadKey().Key == ConsoleKey.Y)
+                            {
+                                var products = db.Entry(c).Collection(c2 => c2.Products);
+                                if (!products.IsLoaded) products.Load();
+                            }
+                            WriteLine();
+                        }
+
+                        WriteLine(
+                          $"{c.CategoryName} has {c.Products.Count} products.");
+                    }
+
+                    WriteLine("List of products that cost more than a given price with most expensive first.");
+
+                    string input;
+                    decimal price;
+                    do
+                    {
+                        Write("Enter a product price: ");
+                        input = ReadLine();
+                    } while (!decimal.TryParse(input, out price));
+
+                    IQueryable<Product> prods = db.Products
+                    .Where(product => product.UnitPrice > price)
+                    .OrderByDescending(product => product.UnitPrice);
+
+                    foreach (Product item in prods)
+                    {
+                        WriteLine($"{item.ProductID}: {item.ProductName} costs {item.UnitPrice:$#,##0.00}");
+                    }
+
+                    var newProduct = new Product
+                    {
+                        CategoryID = 6, // Meat & Poultry 
+                        ProductName = "Bob's Burger",
+                        UnitPrice = 500M
+                    };
+
+                    // 새 product를 추가한다.
+                    db.Products.Add(newProduct);
+                    // 변경 사항을 데이터베이스에 저장한다. 
+                    db.SaveChanges();
+                    foreach (var item in db.Products)
+                    {
+                        WriteLine($"{item.ProductID}: {item.ProductName} costs {item.UnitPrice:$#,##0.00}");
+                    }
+
+
+                    Product updateProduct = db.Products.First(
+                     p => p.ProductName.StartsWith("Bob"));
+                    updateProduct.UnitPrice += 20M;
+                    db.SaveChanges();
+                    foreach (var item in db.Products)
+                    {
+                        WriteLine($"{item.ProductID}: {item.ProductName} costs {item.UnitPrice:$#,##0.00}");
+                    }
+
+
+                    //Product deleteProduct = db.Products.First(p => p.ProductName.StartsWith("Bob"));
+                    //db.Products.Remove(deleteProduct);
+                    //db.SaveChanges();
+                    //foreach (var item in db.Products)
+                    //{
+                    //    WriteLine($"{item.ProductID}: {item.ProductName} costs {item.UnitPrice:$#,##0.00}");
+                    //}
+
+                    t.Commit();
                 }
             }
+
         }
     }
 }
