@@ -84,6 +84,7 @@ namespace Ch08_EFCore
                         UnitPrice = 500M
                     };
 
+                    //craete entity
                     // 새 product를 추가한다.
                     db.Products.Add(newProduct);
                     // 변경 사항을 데이터베이스에 저장한다. 
@@ -93,7 +94,7 @@ namespace Ch08_EFCore
                         WriteLine($"{item.ProductID}: {item.ProductName} costs {item.UnitPrice:$#,##0.00}");
                     }
 
-
+                    //update entity
                     Product updateProduct = db.Products.First(
                      p => p.ProductName.StartsWith("Bob"));
                     updateProduct.UnitPrice += 20M;
@@ -104,13 +105,14 @@ namespace Ch08_EFCore
                     }
 
 
-                    //Product deleteProduct = db.Products.First(p => p.ProductName.StartsWith("Bob"));
-                    //db.Products.Remove(deleteProduct);
-                    //db.SaveChanges();
-                    //foreach (var item in db.Products)
-                    //{
-                    //    WriteLine($"{item.ProductID}: {item.ProductName} costs {item.UnitPrice:$#,##0.00}");
-                    //}
+                    //delete entity
+                    Product deleteProduct = db.Products.First(p => p.ProductName.StartsWith("Bob"));
+                    db.Products.Remove(deleteProduct);
+                    db.SaveChanges();
+                    foreach (var item in db.Products)
+                    {
+                        WriteLine($"{item.ProductID}: {item.ProductName} costs {item.UnitPrice:$#,##0.00}");
+                    }
 
                     t.Commit();
                 }
