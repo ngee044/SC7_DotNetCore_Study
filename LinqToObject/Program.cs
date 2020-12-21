@@ -152,7 +152,11 @@ namespace LinqToObject
 
         static void Main(string[] args)
         {
-            LinqToXmLRead();
+            
+            
+
+
+
         }
 
     }
