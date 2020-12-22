@@ -151,7 +151,7 @@ namespace Ch10_FileSystem
 
         static void Main(string[] args)
         {
-
+            ExEncoding.xmlSerializeTutorial();
         }
     }
 }

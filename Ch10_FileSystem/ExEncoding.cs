@@ -12,7 +12,7 @@ namespace Ch10_FileSystem
 {
     public class ExEncoding
     {
-        void xmlSerializeTutorial()
+        public static void xmlSerializeTutorial()
         {
             var people = new List<Person>
             {
@@ -59,7 +59,7 @@ namespace Ch10_FileSystem
             xmlLoad.Dispose();
         }
 
-        void jsonSerializeTutorial()
+        public static void jsonSerializeTutorial()
         {
             var people = new List<Person>
             {
@@ -95,7 +95,7 @@ namespace Ch10_FileSystem
             WriteLine(File.ReadAllText(jsonFilepath));
         }
 
-        static void EncodingExample()
+        static public void EncodingExample()
         {
             WriteLine("Encodings");
             WriteLine("[1] ASCII");
