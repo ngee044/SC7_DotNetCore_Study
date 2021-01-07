@@ -91,8 +91,7 @@ namespace EncryptionApp
             // salt를 사용하여 해시된 패스워드를 재생성한다.
             var sha = SHA256.Create();
             var saltedPassword = password + user.Salt;
-            var saltedhashedPassword = Convert.ToBase64String(
-              sha.ComputeHash(Encoding.Unicode.GetBytes(saltedPassword)));
+            var saltedhashedPassword = Convert.ToBase64String(sha.ComputeHash(Encoding.Unicode.GetBytes(saltedPassword)));
 
             return (saltedhashedPassword == user.SaltedHashedPassword);
         }
@@ -108,7 +107,7 @@ namespace EncryptionApp
             if (includePrivateParameters)
             {
                 xml = new XElement("RSAKeyValue"
-                  , new XElement("Modulus", Convert.ToBase64String(p.Modulus))
+                  , new XElement("Modulus", Convert.ToBase64String(p.Modulus)) 
                   , new XElement("Exponent",
                     Convert.ToBase64String(p.Exponent))
                   , new XElement("P", Convert.ToBase64String(p.P))

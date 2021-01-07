@@ -14,7 +14,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinqToObject", "LinqToObjec
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ch10_FileSystem", "Ch10_FileSystem\Ch10_FileSystem.csproj", "{2D5A5249-3431-4EE8-959D-AD9A714CD8FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncryptionApp", "EncryptionApp\EncryptionApp.csproj", "{596DEE0A-B107-487F-AD17-581EE17A949F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EncryptionApp", "EncryptionApp\EncryptionApp.csproj", "{596DEE0A-B107-487F-AD17-581EE17A949F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskThread", "TaskThread\TaskThread.csproj", "{90973625-849D-4D25-887C-350818B9563B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUITasks", "GUITasks\GUITasks.csproj", "{B127DAD7-85C2-426D-92C3-A34D9A5C7DE6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +46,14 @@ Global
 		{596DEE0A-B107-487F-AD17-581EE17A949F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{596DEE0A-B107-487F-AD17-581EE17A949F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{596DEE0A-B107-487F-AD17-581EE17A949F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90973625-849D-4D25-887C-350818B9563B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90973625-849D-4D25-887C-350818B9563B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90973625-849D-4D25-887C-350818B9563B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90973625-849D-4D25-887C-350818B9563B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B127DAD7-85C2-426D-92C3-A34D9A5C7DE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B127DAD7-85C2-426D-92C3-A34D9A5C7DE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B127DAD7-85C2-426D-92C3-A34D9A5C7DE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B127DAD7-85C2-426D-92C3-A34D9A5C7DE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
