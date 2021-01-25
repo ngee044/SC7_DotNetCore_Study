@@ -10,9 +10,26 @@ namespace WebApp.Controllers
 {
     public class HomeController : Controller
     {
+        private Northwind db;
+
+        public HomeController(Northwind injectedContext)
+        {
+            db = injectedContext;
+        }
+
         public IActionResult Index()
         {
-            return View();
+#if false
+            //같은 코드
+            var model = new HomeIndexViewModel();
+            model.VisitorCount = (new Random()).Next(1, 1001);
+            model.Products = db.Products.ToArray();
+#else
+            //modern style
+            var model = new HomeIndexViewModel
+            { VisitorCount = (new Random()).Next(1, 1001), Products = db.Products.ToArray() };
+#endif
+            return View(model);
         }
 
         public IActionResult About()
